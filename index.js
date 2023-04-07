@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 import cloudinary from 'cloudinary';
 import mongoose from 'mongoose';
 
-import { openAIRoute, userRoute } from './routes/index.js';
+import { openAIRoute, userRoute, postRoute } from './routes/index.js';
 
 config();
 
@@ -53,6 +53,7 @@ mongoose
 
 app.use('/api/v1/openAI', openAIRoute);
 app.use('/api/v1/user', userRoute);
+app.use('/api/v1/post', postRoute);
 
 app.get('/', async (req, res) => {
     res.status(200).json({
