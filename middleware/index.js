@@ -17,7 +17,7 @@ export const authorizationJWT = async (req, res, next) => {
                 return res.status(403).json({ message: 'Forbidden', error: err });
             });
     } else {
-        next();
-        // return res.status(401).json({ message: 'Unauthorized' });
+        // next();
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 };

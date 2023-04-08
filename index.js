@@ -5,7 +5,11 @@ import { config } from 'dotenv';
 import cloudinary from 'cloudinary';
 import mongoose from 'mongoose';
 
+import './firebaseConfig.js';
+import 'dotenv/config';
+
 import { openAIRoute, userRoute, postRoute } from './routes/index.js';
+import { authorizationJWT } from './middleware/index.js';
 
 config();
 
@@ -13,7 +17,7 @@ const app = express();
 
 const PORT = process.env.PORT || 7000;
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors(), bodyParser.json());
+app.use(cors(), authorizationJWT, bodyParser.json());
 
 app.all('/', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -51,9 +55,9 @@ mongoose
         console.log('err', err);
     });
 
-app.use('/api/v1/openAI', openAIRoute);
-app.use('/api/v1/user', userRoute);
-app.use('/api/v1/post', postRoute);
+app.use('/api/openAI', openAIRoute);
+app.use('/api/user', userRoute);
+app.use('/api/post', postRoute);
 
 app.get('/', async (req, res) => {
     res.status(200).json({
