@@ -9,6 +9,7 @@ const getPagination = async (req, res) => {
     const posts = await PostModel.find()
         .skip(limit * page - limit)
         .limit(limit)
+        .populate('host')
         .exec();
 
     const total = await PostModel.countDocuments();
