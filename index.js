@@ -17,7 +17,9 @@ const app = express();
 
 const PORT = process.env.PORT || 7000;
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors(), authorizationJWT, bodyParser.json());
+app.use(cors(), authorizationJWT, bodyParser.json({ limit: '10mb' }));
+
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 app.all('/', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -30,17 +32,6 @@ cloudinary.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET,
 });
-
-// const res = cloudinary.uploader.upload('https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg', {
-//     public_id: 'olympic_flag',
-// });
-
-// res.then((data) => {
-//     console.log(data);
-//     console.log(data.secure_url);
-// }).catch((err) => {
-//     console.log(err);
-// });
 
 mongoose.set('strictQuery', false);
 mongoose

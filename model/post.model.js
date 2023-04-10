@@ -17,6 +17,7 @@ const Post = new mongoose.Schema(
         host: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            require: true,
         },
     },
     { timestamps: true },

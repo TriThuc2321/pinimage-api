@@ -1,4 +1,5 @@
 import { PostModel } from '../model/index.js';
+import cloudinary from 'cloudinary';
 
 const POST_PER_PAGE = 6;
 const getPagination = async (req, res) => {
@@ -16,9 +17,13 @@ const getPagination = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        const { prompt, url, hostId } = req.body;
+        const { prompt, image, hostId } = req.body;
 
-        const newPost = new PostModel({ prompt, url, hostId, views: 0 });
+        const { secure_url } = await cloudinary.uploader.upload(image, {
+            public_id: 'olympic_flag',
+        });
+
+        const newPost = new PostModel({ prompt, url: secure_url, host: hostId, views: 0 });
         await newPost.save();
         res.json({ data: newPost, status: 'SUCCESS' });
     } catch (error) {
