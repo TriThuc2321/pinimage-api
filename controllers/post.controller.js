@@ -7,6 +7,7 @@ const getPagination = async (req, res) => {
     const limit = parseInt(req.query.limit) || POST_PER_PAGE;
 
     const posts = await PostModel.find()
+        .sort({ createdAt: -1 })
         .skip(limit * page - limit)
         .limit(limit)
         .populate('host')
