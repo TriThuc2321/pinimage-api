@@ -1,4 +1,4 @@
-import { PostModel } from '../model/index.js';
+import { FavoriteModel, PostModel } from '../model/index.js';
 import cloudinary from 'cloudinary';
 
 const POST_PER_PAGE = 6;
@@ -13,8 +13,19 @@ const getPagination = async (req, res) => {
         .populate('host')
         .exec();
 
+    const data = await Promise.all(
+        posts.map(async (post) => {
+            const favorites = await FavoriteModel.find({ postId: post._id });
+
+            return {
+                ...post._doc,
+                favorites,
+            };
+        }),
+    );
+
     const total = await PostModel.countDocuments();
-    res.json({ data: posts, pagination: { total, page, limit } });
+    res.json({ data, pagination: { total, page, limit } });
 };
 
 const createPost = async (req, res) => {
