@@ -17,7 +17,7 @@ const app = express();
 
 const PORT = process.env.PORT || 7000;
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors(), authorizationJWT, bodyParser.json({ limit: '10mb' }));
+app.use(cors(), bodyParser.json({ limit: '10mb' }));
 
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -45,6 +45,8 @@ mongoose
     .catch((err) => {
         console.log('err', err);
     });
+
+userRoute.use(authorizationJWT);
 
 app.use('/api/openAI', openAIRoute);
 app.use('/api/user', userRoute);
